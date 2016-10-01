@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+
+	</style>
+	<script>
+
+	 	function addZero(n){
+	    	return n < 10 ? "0"+n : n; 
+	    }
+		window.onload = function (){
+
+		    var time = document.getElementById("time");
+
+		    count();
+
+		    function count(){
+		    	var now = new Date();
+
+			    var current = new Date(2016,10,10);
+
+			    var dif = (current.getTime() - now.getTime())/1000;
+
+			    var day = parseInt( dif/(24 * 3600) );
+			    var hour = parseInt( dif%86400 / 3600 )
+			    var min = parseInt( dif%86400%3600 / 60 );
+			    var sec = parseInt( dif%60 );
+
+		    	time.innerHTML = '离毕业还有'+ addZero(day) +'天'+ addZero(hour) +'时'+ addZero(min) +'分'+ addZero(sec) +'秒';
+		    }
+
+
+		    setInterval( function (){
+		    	count();
+		    },1000 )
+
+
+		}
+	</script>
+</head>
+<body>
+	<div id="time">离毕业还有X天X时X分X秒</div>
+</body>
+</html>
+    

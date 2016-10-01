@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+
+	</style>
+	<script>
+		
+
+	    function addZero(n){
+	    	return n < 10 ? "0"+n : n; 
+	    }
+
+	    function formatWeek(w){
+	    	return ["日","一","二","三","四","五","六"][w];
+	    }
+
+	    function init(obj){
+    		var d = new Date();
+    		obj.innerHTML = '当前时间：'+d.getFullYear()+'年'+addZero(d.getMonth()+1)+'月'+d.getDate()+'日 '+addZero(d.getHours())+'时'+addZero(d.getMinutes())+'分'+addZero(d.getSeconds())+'秒 星期'+formatWeek(d.getDay());
+    	}
+
+		window.onload = function (){
+
+		    var date = document.getElementById("date");
+		    var time = document.getElementById("time");
+		    var table = document.getElementsByTagName("table")[0];
+		    var tbody = table.getElementsByTagName("tbody")[0];
+		    var prevMonth = document.getElementById("prevMonth");
+		    var nextMonth = document.getElementById("nextMonth");
+		    var prevYear = document.getElementById("prevYear");
+		    var nextYear = document.getElementById("nextYear");
+		    var whichDay = 0;
+
+		    init(date);
+
+		    setInterval(function(){
+		    	init(date);
+		    },1000)
+
+		    var d = new Date();
+
+		    var year = d.getFullYear();
+
+		    var month = d.getMonth();
+
+		    time.innerHTML = year +'年'+ (month+1) +'月';
+
+
+		    tbody.innerHTML = calFunc(2016,6);
+
+
+		    function calFunc(year,month){
+		    	
+		    	var str = "";
+
+		    	//获得某一个月的天数(7月)
+			    var d1 = new Date(year,month+1,1);
+
+			    var days = new Date(d1-1).getDate();
+
+			    //获得这个月1号是星期几
+		    	var d = new Date(year,month);
+
+			    var setFirstDay = d.setDate(1);
+
+			    var weekNum = d.getDay();
+
+			    //获得tbody的行数
+			    var cells = Math.ceil((days + weekNum)/7);
+
+			    whichDay = -weekNum;
+
+			    for( var i = 0; i < cells; i++ ){
+			    	str += "<tr>";
+
+			    	for( var j = 0; j < 7; j++ ){
+			    		whichDay++;
+			    		if( whichDay < 1 || whichDay > days ){
+			    			str += "<td></td>";
+			    		} else {
+			    			str += "<td>"+ whichDay +"</td>";
+			    		}
+			    		
+			    	}
+
+			    	str += "</tr>";
+
+			    }
+
+			    return str;
+		    }
+
+
+		    prevMonth.onclick = function (){
+		    	month--;
+		    	if( month < 0 ){
+		    		d.setMonth(month);
+		    		month = 11;
+		    	}
+		    	time.innerHTML = d.getFullYear() +'年'+ (month+1) +'月';
+		    	tbody.innerHTML = calFunc(year,month);
+		    }
+
+		    nextMonth.onclick = function (){
+		    	month++;
+		    	if( month > 11 ){
+		    		d.setMonth(month);
+		    		month = 0;
+		    	} 
+		    	time.innerHTML = d.getFullYear() +'年'+ (month%12+1) +'月';
+		    	tbody.innerHTML = calFunc(year,month);
+		    }
+
+		    prevYear.onclick = function (){
+		    	year -= 1;
+		    	calFunc(year,month);
+		    	time.innerHTML = year +'年'+ (month%12+1) +'月';
+		    }
+
+		    nextYear.onclick = function (){
+		    	year += 1;
+		    	calFunc(year,month);
+		    	time.innerHTML = year +'年'+ (month%12+1) +'月';
+		    }
+
+		}
+	</script>
+</head>
+<body>
+	<p id="date"></p>
+	<p id="time"></p>
+	<input type="button" id="prevYear" value="<<" />
+	<input type="button" id="prevMonth" value="<" />
+	<input type="button" id="nextMonth" value=">" />
+	<input type="button" id="nextYear" value=">>" />
+	<table>
+		<thead>
+			<tr>
+				<td>日</td>
+				<td>一</td>
+				<td>二</td>
+				<td>三</td>
+				<td>四</td>
+				<td>五</td>
+				<td>六</td>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+</body>
+</html>
+    
